@@ -634,3 +634,109 @@ footer a:hover{ color: var(--brass); }
 .menu-item img{ width:96px; height:96px; object-fit:cover; border-radius:10px; flex-shrink:0; }
 .menu-item-top{ display:flex; justify-content:space-between; gap:12px; }
 .menu-price{ font-family:'Playfair Display',serif; color:var(--wood); white-space:nowrap; }
+
+
+/* ==========================================================================
+   Hospitality photo polish — uses the existing palette and component classes
+   ========================================================================== */
+.card,
+.testimonial-card,
+.feature-card{
+  overflow:hidden;
+  border:1px solid rgba(28,25,22,.07);
+  box-shadow:0 10px 28px -22px rgba(28,25,22,.48);
+  transition:transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+}
+.card:hover,
+.testimonial-card:hover,
+.feature-card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 20px 38px -24px rgba(28,25,22,.55);
+  border-color:rgba(200,155,90,.45);
+}
+.card > img{
+  transition:transform .45s ease;
+}
+.card:hover > img{
+  transform:scale(1.025);
+}
+.framed-img{
+  overflow:hidden;
+  border-radius:var(--radius);
+  box-shadow:0 16px 34px -24px rgba(28,25,22,.55);
+}
+.framed-img img{
+  transition:transform .5s ease;
+}
+.framed-img:hover img{
+  transform:scale(1.025);
+}
+.page-hero{
+  background-position:center 48%;
+}
+.page-hero::before{
+  background:linear-gradient(90deg,rgba(18,15,12,.78) 0%,rgba(18,15,12,.48) 54%,rgba(18,15,12,.22) 100%);
+}
+.gallery-grid{
+  gap:14px;
+}
+.gallery-item{
+  position:relative;
+  overflow:hidden;
+  border-radius:8px;
+  background:var(--linen-deep);
+  box-shadow:0 8px 22px -18px rgba(28,25,22,.5);
+}
+.gallery-item img{
+  transition:transform .45s ease, filter .35s ease;
+}
+.gallery-item:hover img{
+  transform:scale(1.045);
+  filter:saturate(1.06);
+}
+.gallery-overlay{
+  background:linear-gradient(180deg,transparent 0%,rgba(20,17,14,.78) 100%);
+  letter-spacing:.09em;
+  font-size:11px;
+  font-weight:700;
+}
+.section-heading h2{
+  text-wrap:balance;
+}
+.btn{
+  transition:transform .18s ease, background-color .18s ease, box-shadow .18s ease;
+}
+.btn:hover{
+  transform:translateY(-1px);
+}
+.btn-primary:hover{
+  box-shadow:0 8px 20px -12px rgba(28,25,22,.8);
+}
+.btn-brass:hover{
+  box-shadow:0 8px 20px -12px rgba(200,155,90,.85);
+}
+@media (max-width:767px){
+  .section{padding:58px 0;}
+  .section-tight{padding:44px 0;}
+  .gallery-grid{gap:8px;}
+  .card:hover,.testimonial-card:hover,.feature-card:hover{transform:none;}
+}
+@media (prefers-reduced-motion:reduce){
+  .card,.testimonial-card,.feature-card,.card > img,.framed-img img,
+  .gallery-item img,.btn{transition:none!important;}
+}
+
+
+/* Menu board gallery: supplied restaurant menu images */
+.menu-board-section { background: var(--linen); }
+.menu-board-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:22px; margin-top:34px; }
+.menu-board-card { display:flex; flex-direction:column; overflow:hidden; border:1px solid rgba(139,111,71,.24); border-radius:14px; background:#fffdf8; color:var(--ink); text-decoration:none; box-shadow:0 5px 18px rgba(28,25,22,.06); transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease; }
+.menu-board-card:hover { transform:translateY(-4px); box-shadow:0 12px 28px rgba(28,25,22,.13); border-color:var(--brass); }
+.menu-board-card img { display:block; width:100%; aspect-ratio:2/3; object-fit:cover; object-position:top center; background:var(--linen-deep); }
+.menu-board-card span { display:flex; flex-direction:column; gap:5px; padding:16px 18px 18px; }
+.menu-board-card strong { font-family:'Playfair Display',serif; font-size:19px; }
+.menu-board-card small { color:#71675c; font-size:13px; line-height:1.5; }
+.menu-board-note { margin:22px 0 0; color:#81786d; text-align:center; font-size:13px; }
+@media(max-width:900px) { .menu-board-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; } }
+@media(max-width:520px) { .menu-board-grid { grid-template-columns:1fr; gap:18px; max-width:420px; margin-left:auto; margin-right:auto; } .menu-board-card span { padding:14px 16px 16px; } }
+@media(prefers-reduced-motion:reduce) { .menu-board-card { transition:none; } .menu-board-card:hover { transform:none; } }
