@@ -1,4 +1,4 @@
-// American Roadhouse — shared interactions
+// American Roadhouse - shared interactions
 document.addEventListener('DOMContentLoaded', () => {
 
   /* Sticky nav compaction */
@@ -14,9 +14,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const menuBtn = document.getElementById('menu-open');
   const menuCloseBtn = document.getElementById('menu-close');
   const mobileMenu = document.getElementById('mobile-menu');
-  menuBtn?.addEventListener('click', () => mobileMenu?.classList.add('open'));
-  menuCloseBtn?.addEventListener('click', () => mobileMenu?.classList.remove('open'));
-  mobileMenu?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.remove('open')));
+  const closeMobileMenu = () => {
+    mobileMenu?.classList.remove('open');
+    menuBtn?.setAttribute('aria-expanded', 'false');
+    menuBtn?.focus();
+  };
+  menuBtn?.setAttribute('aria-expanded', 'false');
+  menuBtn?.addEventListener('click', () => {
+    const isOpen = mobileMenu?.classList.toggle('open') || false;
+    menuBtn.setAttribute('aria-expanded', String(isOpen));
+    if (isOpen) menuCloseBtn?.focus();
+  });
+  menuCloseBtn?.addEventListener('click', closeMobileMenu);
+  mobileMenu?.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMobileMenu));
 
   /* Reveal on scroll */
   const revealEls = document.querySelectorAll('.reveal');
@@ -65,20 +75,39 @@ document.addEventListener('DOMContentLoaded', () => {
     const gallery = Array.from(document.querySelectorAll('.gallery-item img'));
     let idx = 0;
     const show = (i) => {
+      if (!gallery.length || !lbImg) return;
       idx = (i + gallery.length) % gallery.length;
       lbImg.src = gallery[idx].src;
       lbImg.alt = gallery[idx].alt;
     };
+    const closeLightbox = () => {
+      lightbox.classList.remove('open');
+      lightbox.setAttribute('aria-hidden', 'true');
+      gallery[idx]?.closest('.gallery-item')?.focus();
+    };
     document.querySelectorAll('.gallery-item').forEach((el, i) => {
-      el.addEventListener('click', () => { show(i); lightbox.classList.add('open'); });
+      el.setAttribute('role', 'button');
+      el.setAttribute('tabindex', '0');
+      el.setAttribute('aria-label', `View image: ${gallery[i]?.alt || 'Gallery photo'}`);
+      const open = () => {
+        show(i);
+        lightbox.classList.add('open');
+        lightbox.setAttribute('aria-hidden', 'false');
+        document.getElementById('lightbox-close')?.focus();
+      };
+      el.addEventListener('click', open);
+      el.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
+      });
     });
-    document.getElementById('lightbox-close')?.addEventListener('click', () => lightbox.classList.remove('open'));
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.getElementById('lightbox-close')?.addEventListener('click', closeLightbox);
     document.getElementById('lightbox-prev')?.addEventListener('click', () => show(idx - 1));
     document.getElementById('lightbox-next')?.addEventListener('click', () => show(idx + 1));
-    lightbox.addEventListener('click', (e) => { if (e.target === lightbox) lightbox.classList.remove('open'); });
+    lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
     document.addEventListener('keydown', (e) => {
       if (!lightbox.classList.contains('open')) return;
-      if (e.key === 'Escape') lightbox.classList.remove('open');
+      if (e.key === 'Escape') closeLightbox();
       if (e.key === 'ArrowRight') show(idx + 1);
       if (e.key === 'ArrowLeft') show(idx - 1);
     });
@@ -109,8 +138,23 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('form[data-inquiry-form]').forEach(form => {
     const submitBtn = form.querySelector('button[type="submit"]');
     const errorBox = form.querySelector('.form-error');
+    const checkIn = form.querySelector('input[name="check_in"]');
+    const checkOut = form.querySelector('input[name="check_out"]');
+    const today = new Date();
+    const todayLocal = new Date(today.getTime() - today.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+    form.querySelectorAll('input[type="date"]').forEach(dateInput => { dateInput.min = todayLocal; });
+    if (checkIn && checkOut) {
+      checkIn.min = todayLocal;
+      checkOut.min = todayLocal;
+      checkIn.addEventListener('change', () => { checkOut.min = checkIn.value || todayLocal; });
+    }
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
+      if (checkIn && checkOut && checkOut.value <= checkIn.value) {
+        checkOut.setCustomValidity('Check-out must be after check-in.');
+      } else if (checkOut) {
+        checkOut.setCustomValidity('');
+      }
       if (!form.checkValidity()){ form.reportValidity(); return; }
       const originalLabel = submitBtn ? submitBtn.textContent : '';
       if (submitBtn){ submitBtn.disabled = true; submitBtn.textContent = 'Sending…'; }
@@ -121,6 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
           headers: { 'Accept': 'application/json' },
           body: new FormData(form)
         });
+        if (!res.ok) throw new Error('Submission service returned an error');
         const result = await res.json();
         if (result.success){
           form.style.display = 'none';
@@ -131,7 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       } catch (err){
         if (errorBox){
-          errorBox.textContent = "Something went wrong sending your request — please try again, or call us at 0915 875 4860.";
+          errorBox.textContent = "Something went wrong sending your request - please try again, or call us at 0915 875 4860.";
           errorBox.classList.add('show');
         }
       } finally {
@@ -141,11 +186,28 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* Quick availability card -> routes to booking form (no live inventory yet) */
+  const quickCheckIn = document.getElementById('qa-checkin');
+  const quickCheckOut = document.getElementById('qa-checkout');
+  if (quickCheckIn && quickCheckOut) {
+    const today = new Date();
+    const todayLocal = new Date(today.getTime() - today.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+    quickCheckIn.min = todayLocal;
+    quickCheckOut.min = todayLocal;
+    quickCheckIn.addEventListener('change', () => { quickCheckOut.min = quickCheckIn.value || todayLocal; });
+  }
   document.getElementById('quick-availability')?.addEventListener('submit', (e) => {
     e.preventDefault();
     const ci = document.getElementById('qa-checkin')?.value || '';
     const co = document.getElementById('qa-checkout')?.value || '';
     const guests = document.getElementById('qa-guests')?.value || '';
+    const checkIn = quickCheckIn;
+    const checkOut = quickCheckOut;
+    if (checkOut && checkIn && checkOut.value <= checkIn.value) {
+      checkOut.setCustomValidity('Check-out must be after check-in.');
+      checkOut.reportValidity();
+      return;
+    }
+    checkOut?.setCustomValidity('');
     const qs = new URLSearchParams({ tab:'booking', checkin:ci, checkout:co, guests }).toString();
     window.location.href = `contact.html?${qs}#forms`;
   });
@@ -154,6 +216,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const ciParam = params.get('checkin'), coParam = params.get('checkout'), gParam = params.get('guests');
   if (ciParam) document.getElementById('bk-checkin') && (document.getElementById('bk-checkin').value = ciParam);
   if (coParam) document.getElementById('bk-checkout') && (document.getElementById('bk-checkout').value = coParam);
-  if (gParam) document.getElementById('bk-guests') && (document.getElementById('bk-guests').value = gParam);
+  if (gParam && /^\d+$/.test(gParam)) {
+    const guestInput = document.getElementById('bk-guests');
+    if (guestInput) guestInput.value = gParam;
+  }
 
 });

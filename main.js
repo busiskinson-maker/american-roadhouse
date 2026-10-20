@@ -1,4 +1,4 @@
-// American Roadhouse — shared interactions
+// American Roadhouse - shared interactions
 document.addEventListener('DOMContentLoaded', () => {
 
   /* Sticky nav compaction */
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       } catch (err){
         if (errorBox){
-          errorBox.textContent = "Something went wrong sending your request — please try again, or call us at 0915 875 4860.";
+          errorBox.textContent = "Something went wrong sending your request - please try again, or call us at 0915 875 4860.";
           errorBox.classList.add('show');
         }
       } finally {
