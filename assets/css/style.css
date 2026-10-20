@@ -35,6 +35,7 @@ body{
   background: var(--linen);
   -webkit-font-smoothing: antialiased;
   line-height: 1.6;
+  font-variant-numeric: lining-nums tabular-nums;
 }
 
 h1,h2,h3,h4,.font-display{
@@ -86,6 +87,22 @@ button{ font-family: inherit; cursor:pointer; }
   font-size:18px;
   color:#4A453E;
   max-width: 52ch;
+}
+.room-price{
+  color:var(--ink);
+  font-family:'Inter',Arial,sans-serif;
+  font-size:25px;
+  font-weight:700;
+  font-variant-numeric:tabular-nums;
+  letter-spacing:-.035em;
+  line-height:1.25;
+}
+.room-price-unit{
+  color:#6b6357;
+  font-family:'Inter',Arial,sans-serif;
+  font-size:13px;
+  font-weight:500;
+  letter-spacing:normal;
 }
 
 /* ---- Buttons ---- */
@@ -630,6 +647,7 @@ footer a:hover{ color: var(--brass); }
 .badge-row{ display:flex; flex-wrap:wrap; gap:10px; }
 .chip{
   font-size:12.5px; font-weight:600; color: var(--wood);
+  font-variant-numeric:lining-nums tabular-nums;
   background: var(--linen-deep); padding:6px 12px; border-radius:6px;
 }
 .map-wrap{ border-radius:14px; overflow:hidden; border:1px solid var(--line); }
@@ -658,14 +676,14 @@ footer a:hover{ color: var(--brass); }
 .tab-panel{ display:none; }
 .tab-panel.active{ display:block; }
 
-.room-meta{ display:flex; gap:18px; margin: 14px 0; color:#6b6357; font-size:13.5px; flex-wrap:wrap; }
+.room-meta{ display:flex; gap:18px; margin: 14px 0; color:#6b6357; font-size:13.5px; flex-wrap:wrap; font-family:'Inter',Arial,sans-serif; font-variant-numeric:lining-nums tabular-nums; }
 .room-meta span{ display:flex; align-items:center; gap:6px; }
 
 .menu-cat-nav{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:44px; }
 .menu-item{ display:flex; gap:18px; padding:22px 0; border-bottom:1px solid var(--line); }
 .menu-item img{ width:96px; height:96px; object-fit:cover; border-radius:10px; flex-shrink:0; }
 .menu-item-top{ display:flex; justify-content:space-between; gap:12px; }
-.menu-price{ font-family:'Playfair Display',serif; color:var(--wood); white-space:nowrap; }
+.menu-price{ font-family:'Inter',Arial,sans-serif; font-size:14px; font-weight:600; font-variant-numeric:lining-nums tabular-nums; color:#70512D; white-space:nowrap; }
 
 
 /* ==========================================================================
