@@ -131,11 +131,36 @@ button{ font-family: inherit; cursor:pointer; }
   color: var(--ink);
 }
 .btn-brass{
-  background: var(--brass);
-  color: var(--ink);
-  border-color: var(--brass);
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  background:linear-gradient(180deg,#785223 0%,#67451F 50%,#583913 100%);
+  color:#F1CF83;
+  font-family:'Playfair Display',Georgia,serif;
+  font-weight:700;
+  letter-spacing:.015em;
+  border-color:#B98E56;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.35), inset 0 -2px 0 rgba(48,29,10,.22), 0 3px 8px rgba(28,25,22,.2);
 }
-.btn-brass:hover{ background: var(--brass-dark); }
+.btn-brass::after{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  top:-80%;
+  bottom:-80%;
+  left:-35%;
+  width:24%;
+  transform:translateX(-180%) skewX(-24deg);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);
+  transition:transform .65s ease;
+  pointer-events:none;
+}
+.btn-brass:hover{
+  background:linear-gradient(180deg,#7A5425 0%,#6B4922 50%,#5B3C16 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.45), inset 0 -2px 0 rgba(48,29,10,.2), 0 7px 16px rgba(28,25,22,.26);
+}
+.btn-brass:hover::after{ transform:translateX(650%) skewX(-24deg); }
+.btn-brass:focus-visible{ outline:3px solid rgba(255,255,255,.9); outline-offset:3px; }
 .btn-block{ width:100%; }
 .btn-sm{ padding: 11px 20px; font-size:13.5px; }
 
@@ -257,7 +282,16 @@ button{ font-family: inherit; cursor:pointer; }
   justify-content:center;
   gap:8px;
 }
-#mobile-bottom-bar a.bar-book{ background: var(--brass); color: var(--ink); }
+#mobile-bottom-bar a.bar-book{
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(180deg,#785223 0%,#67451F 50%,#583913 100%);
+  color:#F1CF83;
+  font-family:'Playfair Display',Georgia,serif;
+  font-weight:700;
+  letter-spacing:.015em;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.35);
+}
 body{ padding-bottom: 62px; }
 @media (min-width:1024px){ body{ padding-bottom:0; } }
 
@@ -722,6 +756,7 @@ footer a:hover{ color: var(--brass); }
 @media (prefers-reduced-motion:reduce){
   .card,.testimonial-card,.feature-card,.card > img,.framed-img img,
   .gallery-item img,.btn{transition:none!important;}
+  .btn-brass::after{transition:none!important;}
 }
 
 

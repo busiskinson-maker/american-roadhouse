@@ -29,7 +29,7 @@ python -m http.server 8080
 
 ## Before publishing
 
-- Set the production domain in `robots.txt`, `sitemap.xml`, canonical URLs, and Open Graph image URLs. The current repository remote identifies the source code, not the deployed site domain.
+- The sitemap, crawler directive, canonical URLs, and Open Graph URLs currently target `https://moralportfolio.crapeling29.workers.dev`. Update them together if the production domain changes.
 - Confirm room names, rates, included services, taxes, menu details, operating hours, and all business claims with the owner.
 - Confirm the Web3Forms access key is enabled for the production domain and that messages reach the intended inbox. Inquiry forms send names, contact details, and booking or message details to that service.
 - Publish a privacy notice explaining what information the forms collect and how inquiries are handled.
