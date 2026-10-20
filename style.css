@@ -1,5 +1,5 @@
 /* ==========================================================================
-   American Roadhouse — Design System
+   American Roadhouse - Design System
    Palette: Ink #1C1916 · Wood #8B6F47 · Linen #F7F4EE · Brass #C89B5A
    Type: Playfair Display (display) + Inter (body)
    ========================================================================== */
@@ -567,7 +567,7 @@ footer h4{ color: var(--linen); font-size:14px; letter-spacing:.04em; margin-bot
 footer a{ display:block; padding:6px 0; font-size:14.5px; transition:color .2s ease; }
 footer a:hover{ color: var(--brass); }
 .footer-grid{ display:grid; grid-template-columns:1fr; gap:40px; }
-@media (min-width:768px){ .footer-grid{ grid-template-columns: 1.4fr 1fr 1fr 1fr; } }
+@media (min-width:768px){ .footer-grid{ grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); } }
 .footer-logo{ font-family:'Playfair Display',serif; font-size:22px; color:var(--linen); margin-bottom:8px; }
 .footer-logo span{ color:var(--brass); }
 .footer-bottom{

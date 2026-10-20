@@ -1,8 +1,8 @@
 /**
  * CENTRALIZED CONTENT DATA
  * ------------------------------------------------------------------
- * Everything a client or developer needs to update — room details,
- * menu items, gallery photos, reviews and FAQs — lives in this one
+ * Everything a client or developer needs to update - room details,
+ * menu items, gallery photos, reviews and FAQs - lives in this one
  * file. No content is hardcoded inside the HTML pages themselves;
  * each page reads from these arrays and renders them at runtime.
  *
@@ -84,22 +84,11 @@ const GALLERY_IMAGES = [
   { id: "g12", category: "Food", label: "Food photo placeholder", span: "" },
 ];
 
-/**
- * PLACEHOLDER REVIEWS — clearly marked for replacement.
- * The verified rating (4.6 / 5, 40 reviews) is real and comes from the
- * supplied reference. The quotes below are NOT real guest reviews —
- * swap them for actual guest testimonials once collected.
- */
-const TESTIMONIALS = [
-  { id: "t1", text: "Placeholder review text — replace with a real guest testimonial once available.", name: "Guest Name", rating: 5, placeholder: true },
-  { id: "t2", text: "Placeholder review text — replace with a real guest testimonial once available.", name: "Guest Name", rating: 5, placeholder: true },
-  { id: "t3", text: "Placeholder review text — replace with a real guest testimonial once available.", name: "Guest Name", rating: 4, placeholder: true },
-];
 
 const FAQS = [
   {
     q: "What room options are available?",
-    a: "Placeholder answer — to be confirmed with current room inventory. Please contact us directly for up-to-date room options and availability.",
+    a: "Placeholder answer - to be confirmed with current room inventory. Please contact us directly for up-to-date room options and availability.",
   },
   {
     q: "How can I make a reservation?",
@@ -107,11 +96,11 @@ const FAQS = [
   },
   {
     q: "What are the check-in and check-out times?",
-    a: "Placeholder answer — check-in and check-out times will be confirmed here once finalized. Please call ahead to confirm current times.",
+    a: "Placeholder answer - check-in and check-out times will be confirmed here once finalized. Please call ahead to confirm current times.",
   },
   {
     q: "Does the restaurant accept walk-ins?",
-    a: "Placeholder answer — please contact us to confirm current walk-in policy and hours.",
+    a: "Placeholder answer - please contact us to confirm current walk-in policy and hours.",
   },
   {
     q: "Where is American Roadhouse located?",
