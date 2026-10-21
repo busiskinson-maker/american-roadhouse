@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Staff Dashboard | American Roadhouse</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/brand/favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/ordering.css">
+<link rel="stylesheet" href="assets/css/luxe.css">
+<style>
+  body{ padding-bottom:0; }
+  .shop-toast{ bottom:24px; }
+  .shop-band{ padding:28px 0 20px; }
+  .shop-band.compact{ padding:18px 0 14px; }
+  .staff-nav{ position:sticky; top:0; z-index:60; background:#14110E; color:var(--linen); border-bottom:2px solid var(--brass); }
+  .staff-nav-inner{ display:flex; align-items:center; justify-content:space-between; gap:12px; min-height:58px; }
+  .staff-brand{ display:flex; align-items:center; gap:10px; font-family:'Playfair Display',serif; font-weight:700; font-size:19px; color:var(--white); white-space:nowrap; }
+  .staff-brand img{ border-radius:7px; }
+  .staff-brand em{ font-style:normal; color:var(--brass); }
+  .staff-pill{ font-family:'Inter',sans-serif; font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; background:var(--brass); color:var(--ink); padding:3px 9px; border-radius:999px; }
+  .staff-nav-right{ display:flex; align-items:center; gap:14px; font-size:13.5px; min-width:0; }
+  .staff-who{ color:rgba(247,244,238,.75); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .staff-who strong{ color:var(--white); }
+  .staff-link{ color:var(--brass); font-weight:600; white-space:nowrap; }
+  .staff-link:hover{ text-decoration:underline; }
+  .staff-signout{ background:transparent; color:var(--linen); border-color:rgba(247,244,238,.4); }
+  .staff-signout:hover{ border-color:var(--brass); }
+  .st-tabs{ top:58px; }
+  @media (max-width:760px){
+    .staff-who .who-email{ display:none; }
+    .staff-brand{ font-size:16px; }
+    .staff-brand span:nth-of-type(1){ display:none; }
+    .staff-link{ display:none; }
+  }
+</style>
+</head>
+<body class="luxe">
+<header class="staff-nav">
+  <div class="container staff-nav-inner">
+    <a href="qsnqpbzovgcamaqq.html" class="staff-brand">
+      <img src="assets/brand/logo-mark.png" alt="" width="32" height="32">
+      <span>American <em>Roadhouse</em></span>
+      <span class="staff-pill">Staff</span>
+    </a>
+    <div class="staff-nav-right">
+      <span id="who" class="staff-who"></span>
+      <a href="index.html" class="staff-link" target="_blank" rel="noopener">View website &#8599;</a>
+      <button type="button" class="btn-xs staff-signout" id="signout" hidden>Sign out</button>
+    </div>
+  </div>
+</header>
+
+<header class="shop-band">
+  <div class="container">
+    <div class="kicker">American Roadhouse</div>
+    <h1>Staff Dashboard</h1>
+    <p>Orders, menu, prices and rates. Authorized staff only.</p>
+  </div>
+</header>
+
+<main class="st-wrap">
+  <div class="container">
+    <div id="st-banner"></div>
+
+    <section id="st-login" class="st-login" hidden>
+      <h2>Sign in</h2>
+      <p style="color:#6b6357;font-size:14px;margin-bottom:18px;">Use the email and password your administrator gave you.</p>
+      <form id="login-form" novalidate>
+        <div class="field" style="margin-bottom:14px;"><label for="l-email">EMAIL</label><input type="email" id="l-email" autocomplete="username" required></div>
+        <div class="field" style="margin-bottom:14px;"><label for="l-pass">PASSWORD</label><input type="password" id="l-pass" autocomplete="current-password" required></div>
+        <div class="form-error" id="login-error" role="alert"></div>
+        <button type="submit" class="btn btn-primary btn-block" id="login-btn">Sign in</button>
+      </form>
+    </section>
+
+    <section id="st-loading" aria-busy="true"><div class="skel" style="height:120px;"></div></section>
+
+    <section id="st-app" hidden>
+      <div class="st-tabs" role="tablist" id="st-tabs"></div>
+      <div id="st-panel" role="tabpanel" aria-live="polite"></div>
+    </section>
+  </div>
+</main>
+
+<dialog id="cfm" class="st-dialog st-confirm" aria-labelledby="cfm-title">
+  <div style="padding:24px;">
+    <h3 id="cfm-title"></h3>
+    <p style="color:#6b6357;font-size:14.5px;"></p>
+    <div class="dialog-actions"><button type="button" class="btn btn-outline btn-sm" data-no>Keep it</button><button type="button" class="btn btn-sm btn-danger" data-ok>Confirm</button></div>
+  </div>
+</dialog>
+
+<dialog id="pwd" class="st-dialog st-confirm" aria-labelledby="pwd-title">
+  <form id="pwd-form" method="dialog" novalidate>
+    <h3 id="pwd-title">Reset password</h3>
+    <p style="color:#6b6357;font-size:14.5px;margin-bottom:16px;">New password for <strong id="pwd-who"></strong></p>
+    <div class="field"><label for="pwd-new">NEW PASSWORD</label>
+      <div class="pw-row"><input type="password" id="pwd-new" autocomplete="new-password" spellcheck="false">
+        <button type="button" class="btn-xs" data-pw-gen="pwd-new">Generate</button>
+        <button type="button" class="btn-xs" data-pw-show="pwd-new">Show</button></div>
+      <div class="err"></div></div>
+    <p class="hint">At least 10 characters, with letters and numbers. They will use this to sign in.</p>
+    <div class="form-error" id="pwd-error" role="alert"></div>
+    <div class="dialog-actions"><button type="button" class="btn btn-outline btn-sm" id="pwd-cancel">Cancel</button>
+      <button type="submit" class="btn btn-primary btn-sm" id="pwd-save">Set password</button></div>
+  </form>
+</dialog>
+
+<dialog id="dlg" class="st-dialog"><form id="dlg-form" method="dialog" novalidate></form></dialog>
+
+<script src="assets/js/env.js" onerror="void 0"></script>
+<script type="module" src="assets/js/staff.js"></script>
+</body>
+</html>

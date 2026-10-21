@@ -1,0 +1,5 @@
+.env
+.env.*
+!.env.example
+assets/js/env.js
+node_modules/

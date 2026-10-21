@@ -6,10 +6,10 @@ window.AmericanRoadhouseNavbar = String.raw`<nav id="site-nav" aria-label="Prima
       American <span>Roadhouse</span>
     </a>
     <div class="nav-links">
-      <a href="index.html">Home</a>
       <a href="rooms.html">Rooms</a>
       <a href="restaurant.html">Restaurant</a>
       <a href="menu.html">Menu</a>
+      <a href="order.html">Order</a>
       <a href="gallery.html">Gallery</a>
       <a href="about.html">About</a>
       <a href="location.html">Location</a>
@@ -28,10 +28,10 @@ window.AmericanRoadhouseNavbar = String.raw`<nav id="site-nav" aria-label="Prima
   <button class="close-btn" id="menu-close" aria-label="Close menu">
     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
   </button>
-  <a href="index.html">Home</a>
   <a href="rooms.html">Rooms</a>
   <a href="restaurant.html">Restaurant</a>
   <a href="menu.html">Menu</a>
+  <a href="order.html">Order</a>
   <a href="gallery.html">Gallery</a>
   <a href="about.html">About</a>
   <a href="location.html">Location</a>

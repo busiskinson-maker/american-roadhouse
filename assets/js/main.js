@@ -186,11 +186,35 @@ document.addEventListener('DOMContentLoaded', async () => {
     updateFlag();
   });
 
-  /* Form submission -> sent to the owner's inbox via Web3Forms, then confirmation state */
+  /* Form submission -> sent to LazyForms, then confirmation state */
   const nextDate = value => {
     const date = new Date(`${value}T00:00:00`);
     date.setDate(date.getDate() + 1);
     return date.toISOString().slice(0, 10);
+  };
+  /* Also save the request in Supabase so staff see it in the dashboard (email still goes out via LazyForms) */
+  const saveInquiry = async (form) => {
+    const env = window.__ENV;
+    if (!env?.SUPABASE_URL || !env?.SUPABASE_ANON_KEY) throw new Error('Dashboard not configured');
+    const fd = new FormData(form);
+    if (fd.get('_honey')) return;
+    const subject = String(fd.get('subject') || '').toLowerCase();
+    const kind = subject.includes('booking') ? 'booking' : subject.includes('table') ? 'table' : 'message';
+    const skip = new Set(['subject', 'from_name', '_honey', 'country_code', 'full_name', 'phone', 'email']);
+    const details = {};
+    fd.forEach((v, k) => { if (!skip.has(k) && String(v).trim()) details[k] = String(v).trim(); });
+    const res = await fetch(`${env.SUPABASE_URL}/rest/v1/rpc/submit_inquiry`, {
+      method: 'POST',
+      headers: { apikey: env.SUPABASE_ANON_KEY, Authorization: `Bearer ${env.SUPABASE_ANON_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        p_kind: kind,
+        p_full_name: fd.get('full_name') || '',
+        p_phone: `${fd.get('country_code') || ''} ${fd.get('phone') || ''}`.trim(),
+        p_email: fd.get('email') || '',
+        p_details: details
+      })
+    });
+    if (!res.ok) throw new Error('Could not save request');
   };
   document.querySelectorAll('form[data-inquiry-form]').forEach(form => {
     const submitBtn = form.querySelector('button[type="submit"]');
@@ -226,20 +250,21 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (submitBtn){ submitBtn.disabled = true; submitBtn.textContent = 'Sending…'; }
       errorBox?.classList.remove('show');
       try {
-        const res = await fetch('https://api.web3forms.com/submit', {
+        const sendEmail = fetch('https://api.lazyforms.com/f/89ab48a8-441f-46c0-b290-e11613e782bf', {
           method: 'POST',
           headers: { 'Accept': 'application/json' },
           body: new FormData(form)
+        }).then(async (res) => {
+          if (!res.ok) throw new Error('Submission service returned an error');
+          const result = await res.json();
+          if (!result.success) throw new Error(result.message || 'Submission failed');
         });
-        if (!res.ok) throw new Error('Submission service returned an error');
-        const result = await res.json();
-        if (result.success){
-          form.style.display = 'none';
-          const confirm = form.parentElement.querySelector('.form-confirm');
-          confirm?.classList.add('show');
-        } else {
-          throw new Error(result.message || 'Submission failed');
-        }
+        const [mail, saved] = await Promise.allSettled([sendEmail, saveInquiry(form)]);
+        if (saved.status === 'rejected') console.warn('Inquiry not saved to dashboard:', saved.reason);
+        // Success if the team was reached by at least one channel.
+        if (mail.status === 'rejected' && saved.status === 'rejected') throw mail.reason;
+        form.style.display = 'none';
+        form.parentElement.querySelector('.form-confirm')?.classList.add('show');
       } catch (err){
         if (errorBox){
           errorBox.textContent = "Something went wrong sending your request - please try again, or call us at 0915 875 4860.";

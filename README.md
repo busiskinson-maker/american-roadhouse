@@ -11,6 +11,8 @@ Responsive static website for American Roadhouse in Guindulman, Bohol. It uses H
 - `about.html` and `location.html` — business information and directions
 - `contact.html` — room, table, and general inquiry forms
 - `booking.html` — standalone booking inquiry page
+- `order.html` — online food ordering (Supabase)
+- `<random-name>.html` — staff dashboard: live orders, menu, prices, audit trail (Supabase auth, noindex)
 
 ## Main files
 
@@ -18,6 +20,10 @@ Responsive static website for American Roadhouse in Guindulman, Bohol. It uses H
 - `assets/js/main.js` — navigation, gallery, form validation, and Web3Forms submission
 - `assets/js/data.js` — legacy content data; the current pages render their content directly in HTML
 - `style.css` and `main.js` at the project root — legacy copies; current pages load the files under `assets/`
+
+## Online ordering
+
+Backed by Supabase; see [docs/SUPABASE_SETUP.md](docs/SUPABASE_SETUP.md) for the schema (`supabase/`), auth, roles, RLS, env vars (`.env` → `node scripts/build-env.mjs`) and local testing. The service-role key must never be used in the frontend.
 
 ## Run locally
 

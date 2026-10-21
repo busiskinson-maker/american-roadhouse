@@ -248,7 +248,7 @@ button{ font-family: inherit; cursor:pointer; }
 .nav-links{
   display:none;
   align-items:center;
-  gap: 34px;
+  gap: clamp(18px, 2.2vw, 34px);
 }
 @media (min-width: 1024px){ .nav-links{ display:flex; } }
 .nav-links a{
