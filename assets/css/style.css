@@ -104,6 +104,31 @@ button{ font-family: inherit; cursor:pointer; }
   font-weight:500;
   letter-spacing:normal;
 }
+.room-card-footer{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:16px;
+}
+.room-card{
+  align-content:start;
+  grid-template-rows:auto 1fr;
+}
+.room-card > div{
+  height:100%;
+  display:flex;
+  flex-direction:column;
+}
+.room-card .badge-row{
+  gap:8px;
+}
+.room-card .chip{
+  font-size:11px;
+  padding:5px 9px;
+}
+.room-card-footer{
+  margin-top:auto;
+}
 
 /* ---- Buttons ---- */
 .btn{
@@ -446,6 +471,11 @@ body{ padding-bottom: 62px; }
   border-color: var(--brass);
   background: var(--white);
 }
+.phone-input{ position:relative; display:block; }
+.phone-input input{ width:100%; min-width:0; padding-left:78px; }
+.phone-input select{ position:absolute; z-index:2; left:22px; top:1px; width:54px; height:calc(100% - 2px); min-width:0; padding:0 2px; border:0; background:transparent; font-size:12px; color:var(--text); }
+.phone-input select:focus{ box-shadow:none; }
+.country-flag{ position:absolute; z-index:3; left:7px; top:50%; transform:translateY(-50%); width:15px; height:15px; fill:none; stroke:var(--wood); stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; pointer-events:none; }
 
 /* ---- Cards ---- */
 .card{
@@ -652,6 +682,12 @@ footer a:hover{ color: var(--brass); }
 }
 .map-wrap{ border-radius:14px; overflow:hidden; border:1px solid var(--line); }
 .map-wrap iframe{ width:100%; height:100%; min-height:380px; border:0; display:block; filter: grayscale(12%) contrast(1.02); }
+.location-map{ min-height:380px; }
+.location-map iframe{ height:380px; min-height:380px; }
+@media (max-width:899px){
+  .location-map,
+  .location-map iframe{ min-height:320px; height:320px; }
+}
 
 .form-error{ display:none; background:#F7E7E1; color:#8A3B24; border:1px solid #E7BBA8; border-radius:8px; padding:12px 16px; font-size:13.5px; margin-bottom:18px; }
 .form-error.show{ display:block; }

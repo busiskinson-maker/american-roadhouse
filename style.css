@@ -167,6 +167,14 @@ button{ font-family: inherit; cursor:pointer; }
   transition: color .35s ease;
   letter-spacing: .01em;
 }
+.nav-logo-mark{
+  width:34px;
+  height:34px;
+  border-radius:8px;
+  flex-shrink:0;
+  display:block;
+  object-fit:cover;
+}
 .nav-logo span{ color: var(--brass); }
 #site-nav.scrolled .nav-logo{ color: var(--ink); }
 .nav-links{

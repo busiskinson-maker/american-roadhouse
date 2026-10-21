@@ -38,50 +38,9 @@
 </script>
 </head>
 <body>
-<nav id="site-nav">
-  <div class="container nav-inner">
-    <a href="index.html" class="nav-logo">
-      <img src="assets/brand/logo-mark.png" alt="American Roadhouse logo" class="nav-logo-mark">
-      American <span>Roadhouse</span>
-    </a>
-    <div class="nav-links">
-      <a href="index.html" class="">Home</a>
-<a href="rooms.html" class="active">Rooms</a>
-<a href="restaurant.html" class="">Restaurant</a>
-<a href="menu.html" class="">Menu</a>
-<a href="gallery.html" class="">Gallery</a>
-<a href="about.html" class="">About</a>
-<a href="contact.html" class="">Contact</a>
+<div id="shared-navbar"></div>
 
-    </div>
-    <div style="display:flex;align-items:center;gap:14px;">
-      <a href="contact.html?tab=booking#forms" class="btn btn-brass nav-cta btn-sm">Book Now</a>
-      <button class="nav-toggle" id="menu-open" aria-label="Open menu">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-      </button>
-    </div>
-  </div>
-</nav>
-
-<div class="mobile-menu" id="mobile-menu">
-  <button class="close-btn" id="menu-close" aria-label="Close menu">
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
-  </button>
-  <a href="index.html">Home</a><a href="rooms.html">Rooms</a><a href="restaurant.html">Restaurant</a><a href="menu.html">Menu</a><a href="gallery.html">Gallery</a><a href="about.html">About</a><a href="contact.html">Contact</a>
-  <a href="contact.html?tab=booking#forms" class="btn btn-brass mm-cta">Book Now</a>
-  <a href="tel:+639158754860" class="mm-phone">Call 0915 875 4860</a>
-</div>
-
-<div id="mobile-bottom-bar">
-  <a href="tel:+639158754860">
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-    Call
-  </a>
-  <a href="contact.html?tab=booking#forms" class="bar-book">Book Now</a>
-</div>
-
-
-<section class="page-hero" style="background-image:url('assets/rooms/Deluxe_suite.png');">
+<section class="page-hero" style="background-image:url('assets/rooms/Deluxe_suite.jpg');">
   <div class="container page-hero-content">
     <div class="crumb"><a href="index.html">Home</a> / Rooms</div>
     <h1>Rooms</h1>
@@ -92,13 +51,13 @@
   <div class="container">
     <div class="section-heading reveal">
       <div class="eyebrow">ACCOMMODATION</div>
-      <h2>Two Room Types, Both Air-Conditioned</h2>
-      <p class="lede">Choose between our compact Studio or our more spacious Deluxe Suite with a private balcony and mountain view. Rates include breakfast and are shown per night.</p>
+      <h2>Three Room Types, All Air-Conditioned</h2>
+      <p class="lede">Choose the compact Studio, the comfortable Deluxe Queen Studio, or our more spacious Deluxe Suite with a private balcony and mountain view.</p>
     </div>
-    <div class="grid-3" style="grid-template-columns:repeat(auto-fit,minmax(320px,1fr));max-width:920px;margin:0 auto;">
+    <div class="grid-3" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr));max-width:1100px;margin:0 auto;">
       
-    <div class="card reveal" style="display:grid;grid-template-columns:1fr;">
-      <img src="assets/rooms/studio_room.png" alt="Studio at American Roadhouse" loading="lazy" style="height:260px;object-fit:cover;width:100%;">
+    <div class="card reveal room-card" style="display:grid;grid-template-columns:1fr;">
+      <img src="assets/rooms/studio_room.jpg" alt="Studio at American Roadhouse" loading="lazy" style="height:260px;object-fit:cover;width:100%;">
       <div style="padding:26px;">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
           <h3 style="font-size:22px;">Studio</h3>
@@ -108,7 +67,7 @@
         <div class="badge-row" style="margin:14px 0 18px;"><span class="chip">Air conditioning</span> <span class="chip">Private bathroom</span> <span class="chip">Flat-screen TV</span> <span class="chip">Free WiFi</span> <span class="chip">Free toiletries</span> <span class="chip">Bidet toilet</span> <span class="chip">Bath or shower</span> <span class="chip">Towels &amp; linen</span> <span class="chip">Desk</span> <span class="chip">Wardrobe or closet</span> </div>
         <div class="badge-row" style="margin-bottom:18px;"><div class="chip" style="background:var(--linen);">Breakfast included</div><div class="chip" style="background:var(--linen);">Non-refundable</div></div>
         <div class="hairline" style="margin-bottom:18px;"></div>
-        <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:14px;">
+        <div class="room-card-footer">
           <div>
             <div class="room-price">&#8369;1,458 <span class="room-price-unit">/ night</span></div>
           </div>
@@ -116,8 +75,28 @@
         </div>
       </div>
     </div>
-    <div class="card reveal" style="display:grid;grid-template-columns:1fr;">
-      <img src="assets/rooms/Deluxe_suite.png" alt="Deluxe Suite at American Roadhouse" loading="lazy" style="height:260px;object-fit:cover;width:100%;">
+    <div class="card reveal room-card" style="display:grid;grid-template-columns:1fr;">
+      <img src="assets/rooms/Deluxe_studio.jpg" alt="Deluxe Queen Studio at American Roadhouse" loading="lazy" style="height:260px;object-fit:cover;width:100%;">
+      <div style="padding:26px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
+          <h3 style="font-size:22px;">Deluxe Queen Studio</h3>
+        </div>
+        <p style="color:#6b6357;font-size:14.5px;margin-top:10px;">A comfortable air-conditioned studio with a large double bed, private bathroom, and the essentials for an easy stay.</p>
+        <div class="room-meta"><span>Sleeps 2 guests</span><span>1 large double bed</span><span>20 m&sup2;</span></div>
+        <div class="badge-row" style="margin:14px 0 18px;"><span class="chip">Air conditioning</span> <span class="chip">Private bathroom</span> <span class="chip">Flat-screen TV</span> <span class="chip">Free WiFi</span> <span class="chip">Free toiletries</span> <span class="chip">Bidet</span> <span class="chip">Bath or shower</span> <span class="chip">Towels</span> <span class="chip">Toilet paper</span> </div>
+        <div style="font-weight:700;margin:4px 0 10px;">Saver + Breakfast</div>
+        <div class="badge-row" style="margin-bottom:18px;"><div class="chip" style="background:var(--linen);">Breakfast included</div><div class="chip" style="background:var(--linen);">Non-refundable</div></div>
+        <div class="hairline" style="margin-bottom:18px;"></div>
+        <div class="room-card-footer">
+          <div>
+            <div class="room-price"><s style="font-size:14px;color:#B42318;font-weight:500;">&#8369;1,620</s> &#8369;1,426 <span class="room-price-unit">/ night</span></div>
+          </div>
+          <a href="contact.html?tab=booking#forms" class="btn btn-primary btn-sm">Check Availability</a>
+        </div>
+      </div>
+    </div>
+    <div class="card reveal room-card" style="display:grid;grid-template-columns:1fr;">
+      <img src="assets/rooms/Deluxe_suite.jpg" alt="Deluxe Suite at American Roadhouse" loading="lazy" style="height:260px;object-fit:cover;width:100%;">
       <div style="padding:26px;">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
           <h3 style="font-size:22px;">Deluxe Suite</h3>
@@ -127,7 +106,7 @@
         <div class="badge-row" style="margin:14px 0 18px;"><span class="chip">Balcony</span> <span class="chip">Mountain view</span> <span class="chip">Terrace</span> <span class="chip">Air conditioning</span> <span class="chip">Private bathroom</span> <span class="chip">Flat-screen TV</span> <span class="chip">Free WiFi</span> </div>
         <div class="badge-row" style="margin-bottom:18px;"><div class="chip" style="background:var(--linen);">Breakfast included</div><div class="chip" style="background:var(--linen);">Non-refundable</div></div>
         <div class="hairline" style="margin-bottom:18px;"></div>
-        <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:14px;">
+        <div class="room-card-footer">
           <div>
             <div class="room-price">&#8369;2,835 <span class="room-price-unit">/ night</span></div>
           </div>
@@ -175,6 +154,7 @@
     </div>
   </div>
 </footer>
+<script src="components/navbar.js"></script>
 <script src="assets/js/main.js"></script>
 </body>
 </html>

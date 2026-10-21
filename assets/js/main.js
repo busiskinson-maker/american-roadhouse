@@ -1,5 +1,33 @@
 // American Roadhouse - shared interactions
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+
+  /* Shared navbar component */
+  const navbarSlot = document.getElementById('shared-navbar');
+  if (navbarSlot) {
+    try {
+      let navbarMarkup = window.AmericanRoadhouseNavbar;
+      if (!navbarMarkup) {
+        const response = await fetch('components/navbar.js');
+        if (!response.ok) throw new Error(`Navbar request failed: ${response.status}`);
+        const source = await response.text();
+        const match = source.match(/window\.AmericanRoadhouseNavbar\s*=\s*String\.raw`([\s\S]*)`;\s*$/);
+        navbarMarkup = match?.[1];
+      }
+      if (!navbarMarkup) throw new Error('Navbar markup is unavailable.');
+      navbarSlot.outerHTML = navbarMarkup;
+
+      const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+      document.querySelectorAll('#site-nav a[href], #mobile-menu a[href]').forEach(link => {
+        const href = link.getAttribute('href').split('?')[0].split('#')[0];
+        if (href === currentPage || (currentPage === 'index.html' && href === '')) {
+          link.classList.add('active');
+          link.setAttribute('aria-current', 'page');
+        }
+      });
+    } catch (error) {
+      console.error('Unable to load shared navbar.', error);
+    }
+  }
 
   /* Sticky nav compaction */
   const nav = document.getElementById('site-nav');
@@ -134,7 +162,36 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => document.getElementById('forms')?.scrollIntoView({ behavior:'smooth' }), 200);
   }
 
+  /* Keep phone fields limited to valid phone-number characters. */
+  document.querySelectorAll('input[type="tel"]').forEach(input => {
+    input.addEventListener('input', () => {
+      input.value = input.value.replace(/[^0-9+()\s-]/g, '').slice(0, 16);
+    });
+  });
+
+  /* Keep the compact SVG flag synced with the selected country code. */
+  const countryFlags = {
+    '+63': '<rect width="24" height="8" fill="#1B4FA3"/><rect y="8" width="24" height="8" fill="#CE1126"/><path d="M0 0v16l9-8L0 0Z" fill="#fff"/><circle cx="3.2" cy="8" r="1.2" fill="#FCD116"/>',
+    '+1': '<rect width="24" height="16" fill="#fff"/><path d="M0 0h24v2H0m0 4h24v2H0m0 4h24v2H0" stroke="#B22234" stroke-width="2"/><rect width="11" height="9" fill="#3C3B6E"/>',
+    '+44': '<rect width="24" height="16" fill="#1E3A8A"/><path d="M0 0l24 16M24 0L0 16" stroke="#fff" stroke-width="4"/><path d="M0 0l24 16M24 0L0 16" stroke="#C8102E" stroke-width="2"/><path d="M12 0v16M0 8h24" stroke="#fff" stroke-width="5"/><path d="M12 0v16M0 8h24" stroke="#C8102E" stroke-width="2"/>',
+    '+61': '<rect width="24" height="16" fill="#012169"/><circle cx="17.5" cy="4" r="1.5" fill="#fff"/><path d="M0 0l9 6M9 0L0 6" stroke="#fff" stroke-width="2"/><path d="M4.5 0v6M0 3h9" stroke="#C8102E" stroke-width="1"/>',
+    '+65': '<rect width="24" height="8" fill="#EF3340"/><rect y="8" width="24" height="8" fill="#fff"/><circle cx="5" cy="4" r="2" fill="#fff"/>',
+    '+81': '<rect width="24" height="16" fill="#fff"/><circle cx="12" cy="8" r="4" fill="#BC002D"/>'
+  };
+  document.querySelectorAll('.phone-input').forEach(phoneInput => {
+    const select = phoneInput.querySelector('select[name="country_code"]');
+    const flag = phoneInput.querySelector('.country-flag');
+    const updateFlag = () => { if (select && flag) flag.innerHTML = countryFlags[select.value] || countryFlags['+63']; };
+    select?.addEventListener('change', updateFlag);
+    updateFlag();
+  });
+
   /* Form submission -> sent to the owner's inbox via Web3Forms, then confirmation state */
+  const nextDate = value => {
+    const date = new Date(`${value}T00:00:00`);
+    date.setDate(date.getDate() + 1);
+    return date.toISOString().slice(0, 10);
+  };
   document.querySelectorAll('form[data-inquiry-form]').forEach(form => {
     const submitBtn = form.querySelector('button[type="submit"]');
     const errorBox = form.querySelector('.form-error');
@@ -145,8 +202,17 @@ document.addEventListener('DOMContentLoaded', () => {
     form.querySelectorAll('input[type="date"]').forEach(dateInput => { dateInput.min = todayLocal; });
     if (checkIn && checkOut) {
       checkIn.min = todayLocal;
-      checkOut.min = todayLocal;
-      checkIn.addEventListener('change', () => { checkOut.min = checkIn.value || todayLocal; });
+      const syncCheckout = () => {
+        checkOut.min = checkIn.value ? nextDate(checkIn.value) : todayLocal;
+        if (checkOut.value && checkOut.value < checkOut.min) checkOut.value = '';
+        checkOut.setCustomValidity('');
+      };
+      checkIn.addEventListener('input', syncCheckout);
+      checkIn.addEventListener('change', syncCheckout);
+      checkOut.addEventListener('input', () => {
+        checkOut.setCustomValidity(checkIn.value && checkOut.value && checkOut.value <= checkIn.value ? 'Check-out must be after check-in.' : '');
+      });
+      syncCheckout();
     }
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -192,8 +258,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const today = new Date();
     const todayLocal = new Date(today.getTime() - today.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
     quickCheckIn.min = todayLocal;
-    quickCheckOut.min = todayLocal;
-    quickCheckIn.addEventListener('change', () => { quickCheckOut.min = quickCheckIn.value || todayLocal; });
+    const syncQuickCheckout = () => {
+      quickCheckOut.min = quickCheckIn.value ? nextDate(quickCheckIn.value) : todayLocal;
+      if (quickCheckOut.value && quickCheckOut.value < quickCheckOut.min) quickCheckOut.value = '';
+      quickCheckOut.setCustomValidity('');
+    };
+    quickCheckIn.addEventListener('input', syncQuickCheckout);
+    quickCheckIn.addEventListener('change', syncQuickCheckout);
+    quickCheckOut.addEventListener('input', () => {
+      quickCheckOut.setCustomValidity(quickCheckIn.value && quickCheckOut.value && quickCheckOut.value <= quickCheckIn.value ? 'Check-out must be after check-in.' : '');
+    });
+    syncQuickCheckout();
   }
   document.getElementById('quick-availability')?.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -220,5 +295,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const guestInput = document.getElementById('bk-guests');
     if (guestInput) guestInput.value = gParam;
   }
+
+  /* Normalize browser-restored date values after autofill/session restoration. */
+  const enforceDateRanges = () => {
+    const ranges = [
+      [document.getElementById('bk-checkin'), document.getElementById('bk-checkout')],
+      [document.getElementById('qa-checkin'), document.getElementById('qa-checkout')]
+    ];
+    ranges.forEach(([checkIn, checkOut]) => {
+      if (!checkIn || !checkOut || !checkIn.value) return;
+      checkOut.min = nextDate(checkIn.value);
+      if (checkOut.value && checkOut.value <= checkIn.value) {
+        checkOut.value = '';
+        checkOut.setCustomValidity('');
+      }
+    });
+  };
+  setTimeout(enforceDateRanges, 100);
+  window.addEventListener('pageshow', () => setTimeout(enforceDateRanges, 0));
 
 });

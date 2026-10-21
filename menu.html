@@ -38,48 +38,7 @@
 </script>
 </head>
 <body>
-<nav id="site-nav">
-  <div class="container nav-inner">
-    <a href="index.html" class="nav-logo">
-      <img src="assets/brand/logo-mark.png" alt="American Roadhouse logo" class="nav-logo-mark">
-      American <span>Roadhouse</span>
-    </a>
-    <div class="nav-links">
-      <a href="index.html" class="">Home</a>
-<a href="rooms.html" class="">Rooms</a>
-<a href="restaurant.html" class="">Restaurant</a>
-<a href="menu.html" class="active">Menu</a>
-<a href="gallery.html" class="">Gallery</a>
-<a href="about.html" class="">About</a>
-<a href="contact.html" class="">Contact</a>
-
-    </div>
-    <div style="display:flex;align-items:center;gap:14px;">
-      <a href="contact.html?tab=booking#forms" class="btn btn-brass nav-cta btn-sm">Book Now</a>
-      <button class="nav-toggle" id="menu-open" aria-label="Open menu">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-      </button>
-    </div>
-  </div>
-</nav>
-
-<div class="mobile-menu" id="mobile-menu">
-  <button class="close-btn" id="menu-close" aria-label="Close menu">
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
-  </button>
-  <a href="index.html">Home</a><a href="rooms.html">Rooms</a><a href="restaurant.html">Restaurant</a><a href="menu.html">Menu</a><a href="gallery.html">Gallery</a><a href="about.html">About</a><a href="contact.html">Contact</a>
-  <a href="contact.html?tab=booking#forms" class="btn btn-brass mm-cta">Book Now</a>
-  <a href="tel:+639158754860" class="mm-phone">Call 0915 875 4860</a>
-</div>
-
-<div id="mobile-bottom-bar">
-  <a href="tel:+639158754860">
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-    Call
-  </a>
-  <a href="contact.html?tab=booking#forms" class="bar-book">Book Now</a>
-</div>
-
+<div id="shared-navbar"></div>
 
 <section class="page-hero" style="background-image:url('assets/food/shrimp-pasta.jpg');">
   <div class="container page-hero-content">
@@ -310,28 +269,28 @@
       <p class="lede">Browse our food, seafood, shakes, and bar drink menus. Tap any menu board to view it larger.</p>
     </div>
     <div class="menu-board-grid">
-      <a class="menu-board-card" href="assets/menu-boards/food-combos-menu.png" target="_blank" rel="noopener">
-        <img src="assets/menu-boards/food-combos-menu.png" alt="American Roadhouse food menu featuring lunch and dinner combos" loading="lazy">
+      <a class="menu-board-card" href="assets/menu-boards/food-combos-menu.jpg" target="_blank" rel="noopener">
+        <img src="assets/menu-boards/food-combos-menu.jpg" alt="American Roadhouse food menu featuring lunch and dinner combos" loading="lazy">
         <span><strong>Food Menu</strong><small>Lunch &amp; dinner combos</small></span>
       </a>
-      <a class="menu-board-card" href="assets/menu-boards/seafood-menu.png" target="_blank" rel="noopener">
-        <img src="assets/menu-boards/seafood-menu.png" alt="American Roadhouse seafood menu" loading="lazy">
+      <a class="menu-board-card" href="assets/menu-boards/seafood-menu.jpg" target="_blank" rel="noopener">
+        <img src="assets/menu-boards/seafood-menu.jpg" alt="American Roadhouse seafood menu" loading="lazy">
         <span><strong>Seafood Menu</strong><small>Fish, shrimp, salmon, crab, and prawns</small></span>
       </a>
-      <a class="menu-board-card" href="assets/menu-boards/go-western-menu.png" target="_blank" rel="noopener">
-        <img src="assets/menu-boards/go-western-menu.png" alt="American Roadhouse Go Western menu" loading="lazy">
+      <a class="menu-board-card" href="assets/menu-boards/go-western-menu.jpg" target="_blank" rel="noopener">
+        <img src="assets/menu-boards/go-western-menu.jpg" alt="American Roadhouse Go Western menu" loading="lazy">
         <span><strong>Go Western!</strong><small>Western favorites and snacks</small></span>
       </a>
-      <a class="menu-board-card" href="assets/menu-boards/fruit-shakes-menu.png" target="_blank" rel="noopener">
-        <img src="assets/menu-boards/fruit-shakes-menu.png" alt="American Roadhouse fresh fruit shakes menu" loading="lazy">
+      <a class="menu-board-card" href="assets/menu-boards/fruit-shakes-menu.jpg" target="_blank" rel="noopener">
+        <img src="assets/menu-boards/fruit-shakes-menu.jpg" alt="American Roadhouse fresh fruit shakes menu" loading="lazy">
         <span><strong>Fresh Fruit Shakes</strong><small>Banana, mango, strawberry, and slushies</small></span>
       </a>
-      <a class="menu-board-card" href="assets/menu-boards/cocktail-menu.png" target="_blank" rel="noopener">
-        <img src="assets/menu-boards/cocktail-menu.png" alt="American Roadhouse cocktail menu" loading="lazy">
+      <a class="menu-board-card" href="assets/menu-boards/cocktail-menu.jpg" target="_blank" rel="noopener">
+        <img src="assets/menu-boards/cocktail-menu.jpg" alt="American Roadhouse cocktail menu" loading="lazy">
         <span><strong>Cocktail Menu</strong><small>Classic cocktails and frozen drinks</small></span>
       </a>
-      <a class="menu-board-card" href="assets/menu-boards/alcoholic-drinks-menu.png" target="_blank" rel="noopener">
-        <img src="assets/menu-boards/alcoholic-drinks-menu.png" alt="American Roadhouse alcoholic drinks menu with listed prices" loading="lazy">
+      <a class="menu-board-card" href="assets/menu-boards/alcoholic-drinks-menu.jpg" target="_blank" rel="noopener">
+        <img src="assets/menu-boards/alcoholic-drinks-menu.jpg" alt="American Roadhouse alcoholic drinks menu with listed prices" loading="lazy">
         <span><strong>Drinks with Alcohol</strong><small>Beer, brandy, Tanduay, and soju</small></span>
       </a>
     </div>
@@ -375,6 +334,7 @@
     </div>
   </div>
 </footer>
+<script src="components/navbar.js"></script>
 <script src="assets/js/main.js"></script>
 </body>
 </html>
