@@ -179,6 +179,7 @@ function showLogin() {
 
 async function signOut() {
   if (S.channel) { await supabase.removeChannel(S.channel); S.channel = null; }
+  if (S.poll) { clearInterval(S.poll); S.poll = null; }
   await supabase.auth.signOut();
   S.profile = null;
   route();
@@ -382,9 +383,32 @@ async function cancelOrder(id) {
 
 const refreshOrders = debounce(() => loadOrders(), 250);
 
-function subscribeOrders() {
+const TAB_FOR_TABLE = {
+  menu_items: 'menu', categories: 'categories', room_rates: 'rooms', addons: 'addons', discounts: 'discounts', price_history: 'history',
+};
+const isEditing = () => $('dlg').open || $('pwd')?.open || $('cfm').open || document.querySelector('.qp-form');
+
+function refreshTab(tab = S.tab) {
+  if (tab === 'orders') return loadOrders();
+  if (tab === 'inquiries') return loadInquiries();
+  if (tab === 'history') return loadHistory();
+  if (tab === 'staff') return loadStaff();
+  return loadResource(tab);
+}
+
+// A change made by anyone else (another staff member, a customer) refreshes the tab being viewed.
+const liveRefresh = debounce((table) => {
+  const wants = TAB_FOR_TABLE[table] === S.tab || (table === 'categories' && S.tab === 'menu');
+  if (wants && !isEditing()) refreshTab();
+}, 300);
+
+async function subscribeOrders() {
   if (S.channel) return;
-  S.channel = supabase.channel('staff-orders')
+  // Make sure the realtime socket carries this user's login, or row security would hide the events.
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session) supabase.realtime.setAuth(session.access_token);
+
+  let ch = supabase.channel('staff-live')
     .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, (payload) => {
       if (payload.eventType === 'INSERT') {
         S.fresh.add(payload.new.id);
@@ -400,14 +424,28 @@ function subscribeOrders() {
         if (S.sound) beep();
       }
       refreshInquiries();
-    })
-    .subscribe((status) => {
-      S.live = status === 'SUBSCRIBED';
-      const el = $('live');
-      if (el) { el.classList.toggle('on', S.live); el.textContent = S.live ? 'Live' : 'Reconnecting…'; }
     });
-  // keep "x min ago" and late highlighting fresh
-  setInterval(() => { if (S.tab === 'orders' && !document.hidden && allOrders.length) renderOrders(); updateBadges(); }, 60000);
+  for (const table of Object.keys(TAB_FOR_TABLE)) {
+    ch = ch.on('postgres_changes', { event: '*', schema: 'public', table }, () => liveRefresh(table));
+  }
+  S.channel = ch.subscribe((status) => {
+    S.live = status === 'SUBSCRIBED';
+    const el = $('live');
+    if (el) { el.classList.toggle('on', S.live); el.textContent = S.live ? 'Live' : 'Reconnecting…'; }
+    if (S.live) refreshTab();   // catch anything missed while the connection was down
+  });
+
+  // Safety net: if a live event is ever missed, the view still catches up on its own.
+  if (!S.poll) {
+    S.poll = setInterval(() => {
+      if (document.hidden || isEditing()) return;
+      if (S.tab === 'orders' || S.tab === 'inquiries' || (Date.now() - (S.lastPoll || 0)) > 55000) {
+        S.lastPoll = Date.now();
+        refreshTab();
+      }
+    }, 20000);
+    document.addEventListener('visibilitychange', () => { if (!document.hidden && S.profile && !isEditing()) refreshTab(); });
+  }
 }
 
 function confirmDialog(title, message, label = 'Confirm', danger = true) {

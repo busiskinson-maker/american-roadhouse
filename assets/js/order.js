@@ -354,12 +354,16 @@ const onMyOrderChange = debounce(async () => {
   }
 }, 200);
 
-function subscribeMyOrders(uid) {
-  if (state.channels.some((c) => c.topic.endsWith(`my-orders-${uid}`))) return;
-  const ch = supabase.channel(`my-orders-${uid}`)
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'orders', filter: `user_id=eq.${uid}` }, onMyOrderChange)
-    .subscribe();
-  state.channels.push(ch);
+async function subscribeMyOrders(uid) {
+  if (state.mySub === uid) return;
+  state.mySub = uid;
+  const { data } = await supabase.auth.getSession();
+  if (data.session) supabase.realtime.setAuth(data.session.access_token);
+  state.channels.push(
+    supabase.channel(`my-orders-${uid}`)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'orders', filter: `user_id=eq.${uid}` }, onMyOrderChange)
+      .subscribe()
+  );
 }
 
 /* ---------- cart drawer (mobile) ---------- */
@@ -426,6 +430,8 @@ async function init() {
 
   const { data } = await supabase.auth.getSession();
   if (data.session) { subscribeMyOrders(data.session.user.id); loadMyOrders(); }
+  // Safety net for the order status shown after checkout.
+  setInterval(() => { if (state.confirmId && !document.hidden) onMyOrderChange(); }, 20000);
   if (state.code) refreshQuote();
 }
 

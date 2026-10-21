@@ -55,7 +55,9 @@ cp .env.example .env        # fill in SUPABASE_URL and SUPABASE_ANON_KEY
 node scripts/build-env.mjs  # writes assets/js/env.js (gitignored)
 ```
 
-For deployment, set the same two variables in your host (for example Cloudflare) and run `node scripts/build-env.mjs` as the build command so `assets/js/env.js` is generated at deploy time.
+For deployment, set the same two variables in your host and run `node scripts/build-env.mjs` as the build command, so `assets/js/env.js` is generated at deploy time (it is gitignored, so it is never in the repository).
+
+**Vercel:** the included `vercel.json` already sets the build command (`node scripts/build-env.mjs`) and output directory (`.`). In the Vercel project go to Settings → Environment Variables, add `SUPABASE_URL` and `SUPABASE_ANON_KEY` (the same values as your `.env`; the anon key is the public one) for Production, Preview and Development, then redeploy. If the site shows "Supabase is not configured", the variables were missing when it was built. Variables only take effect on a new deployment.
 
 **Never use the `service_role` / secret key in the frontend.** The build script refuses to run if it detects one. It is not needed: all privileged logic is in RLS policies and `SECURITY DEFINER` functions.
 
@@ -90,3 +92,11 @@ python -m http.server 8080      # ES modules need http://, not file://
 ## Staff page address
 
 The dashboard is deliberately not at `/staff.html`. It is a randomly named file in the project root (`<random-name>.html`), reached by clicking the © symbol in any page footer. Keep the real name private and out of this repository's public docs. This only hides the page; the real protection is the login plus the database security policies. To change the address, rename the file and update the `href` on the © link in each page's footer.
+
+## Live prices on the public pages
+
+`menu.html`, `rooms.html` and the home page read prices from the database through `assets/js/live-prices.js`. Price changes, sold-out switches and hidden items made in the dashboard appear on open pages within a moment (hidden items disappear on the next refresh or tab focus, at most a minute later). The price typed into each page's HTML is only the fallback if the database cannot be reached.
+
+- Each price is linked to its database record by id (`data-live-items` / `data-live-room`), so renaming an item in the dashboard does not break the link. If the seed is ever re-run, the ids change and these attributes must be updated.
+- Dishes marked "Ask for today's price" are not linked yet. Add them in the dashboard, then link them the same way.
+- The photographed price boards (the Roofdeck Grill and Lemon Drinks posters on the menu page) are images and do not change.
